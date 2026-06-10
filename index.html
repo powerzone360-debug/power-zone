@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power Zone | Premium Gym Supplements Colombo Sri Lanka</title>
+  <meta name="description" content="Shop premium, 100% authentic gym supplements, whey protein, creatine, pre-workouts, and fat burners at Power Zone. Fast delivery across Sri Lanka. Order via WhatsApp.">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Dynamic Header Root -->
+  <div id="header-root"></div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <span class="hero-tag">Official Supplement Store</span>
+        <h1>UNLEASH YOUR <span>INNER BEAST</span></h1>
+        <p>Fuel your gains with 100% original, lab-tested international gym supplements. Get expert advice and lightning-fast delivery straight to your doorstep.</p>
+        <div class="hero-btns">
+          <a href="shop.html" class="btn btn-primary" id="hero-cta-shop"><i class="fa-solid fa-dumbbell"></i> Shop Supplements</a>
+          <a href="contact.html" class="btn btn-secondary" id="hero-cta-contact">Visit Our Shop</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="hero-circle-bg"></div>
+        <img src="pz.png" alt="Power Zone Gorilla Logo" class="hero-logo" id="hero-branding-logo">
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="section" id="categories-section" style="background-color: #0a0a0a;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>Shop By Category</h2>
+          <p>Find the exact products you need to smash your fitness goals.</p>
+        </div>
+      </div>
+      
+      <div class="category-grid">
+        <div class="category-card" onclick="window.location.href='shop.html?category=Whey Protein'" id="cat-whey">
+          <div class="category-icon-wrapper"><i class="fa-solid fa-prescription-bottle-supplement"></i></div>
+          <h3>Whey Protein</h3>
+          <p>Muscle Building</p>
+        </div>
+        <div class="category-card" onclick="window.location.href='shop.html?category=Creatine'" id="cat-creatine">
+          <div class="category-icon-wrapper"><i class="fa-solid fa-bolt"></i></div>
+          <h3>Creatine</h3>
+          <p>Strength & Power</p>
+        </div>
+        <div class="category-card" onclick="window.location.href='shop.html?category=Pre-Workout'" id="cat-preworkout">
+          <div class="category-icon-wrapper"><i class="fa-solid fa-fire-flame-curved"></i></div>
+          <h3>Pre-Workout</h3>
+          <p>Explosive Energy</p>
+        </div>
+        <div class="category-card" onclick="window.location.href='shop.html?category=Fat Burners'" id="cat-fatburners">
+          <div class="category-icon-wrapper"><i class="fa-solid fa-droplet-slash"></i></div>
+          <h3>Fat Burners</h3>
+          <p>Shred Fat Fast</p>
+        </div>
+        <div class="category-card" onclick="window.location.href='shop.html?category=Vitamins'" id="cat-vitamins">
+          <div class="category-icon-wrapper"><i class="fa-solid fa-capsules"></i></div>
+          <h3>Vitamins</h3>
+          <p>Health & Wellness</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="section" id="featured-products-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>Best Sellers</h2>
+          <p>Our top-rated products trusted by athletes in Colombo.</p>
+        </div>
+        <a href="shop.html" class="btn btn-secondary" id="view-all-featured" style="padding: 12px 24px; font-size: 14px;">View All Catalog</a>
+      </div>
+      
+      <div class="products-grid" id="featured-products-grid">
+        <!-- Products will load dynamically via JS -->
+        <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px 0;">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size: 32px; color: var(--primary);"></i>
+          <p style="margin-top: 10px;">Loading best sellers...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="section" id="testimonials-section" style="background-color: #0a0a0a; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="section-header" style="justify-content: center; text-align: center; margin-bottom: 56px;">
+        <div class="section-title">
+          <h2>What Our Clients Say</h2>
+          <p>Real feedback from fitness professionals and gym-goers who trust Power Zone.</p>
+        </div>
+      </div>
+      
+      <div class="testimonials-grid">
+        <div class="testimonial-card" id="testi-card-1">
+          <span class="quote-icon"><i class="fa-solid fa-quote-right"></i></span>
+          <div class="stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p>"100% genuine supplements. I bought Optimum Nutrition Whey and Muscletech Creatine, verified both scratch codes online, and they are authentic. Delivered within 24 hours in Colombo."</p>
+          <div class="testimonial-user">
+            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=100&auto=format&fit=crop" alt="Pradeep Kumara" class="user-avatar">
+            <div class="user-info">
+              <h4>Pradeep Kumara</h4>
+              <span>Competitive Bodybuilder</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card" id="testi-card-2">
+          <span class="quote-icon"><i class="fa-solid fa-quote-right"></i></span>
+          <div class="stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p>"Ordering through WhatsApp was extremely simple. I added products to the cart, clicked checkout, and sent my delivery details. The sales team responded immediately and shipped it. Highly recommended!"</p>
+          <div class="testimonial-user">
+            <img src="https://images.unsplash.com/photo-1548690312-e3b507d8c110?q=80&w=100&auto=format&fit=crop" alt="Sanduni Perera" class="user-avatar">
+            <div class="user-info">
+              <h4>Sanduni Perera</h4>
+              <span>CrossFit Instructor</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card" id="testi-card-3">
+          <span class="quote-icon"><i class="fa-solid fa-quote-right"></i></span>
+          <div class="stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p>"The prices at Power Zone are unmatched. Genuine quality, friendly advice on dosing, and they always let me know if items are in stock or when the new stock arrives. Best supplement shop in SL."</p>
+          <div class="testimonial-user">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop" alt="Thilina Silva" class="user-avatar">
+            <div class="user-info">
+              <h4>Thilina Silva</h4>
+              <span>Fitness Enthusiast</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner Section -->
+  <section class="section" id="cta-section">
+    <div class="container">
+      <div class="cta-banner" id="cta-action-banner">
+        <div class="cta-banner-content">
+          <h2>Ready to Fuel Your Body?</h2>
+          <p>Don't settle for average results. Get premium nutrition products and kickstart your fitness journey today. Need help picking a product? Message us on WhatsApp!</p>
+          <a href="shop.html" class="btn btn-primary btn-lg" id="cta-shop-btn"><i class="fa-solid fa-basket-shopping"></i> Start Shopping Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Footer Root -->
+  <div id="footer-root"></div>
+
+  <!-- Product Detail Modal Placeholder -->
+  <div class="detail-modal" id="product-detail-modal">
+    <!-- Loaded dynamically on click -->
+  </div>
+
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Configurations & DB Layer -->
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  
+  <!-- Home Page Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Load Featured Products
+      const grid = document.getElementById("featured-products-grid");
+      if (!grid) return;
+      
+      try {
+        const products = await window.DB.getProducts();
+        
+        // Take first 4 in-stock products as featured, or just first 4
+        const featured = products.slice(0, 4);
+        
+        if (featured.length === 0) {
+          grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px 0;">No products found. Add products in the Admin Panel.</div>`;
+          return;
+        }
+        
+        let html = "";
+        featured.forEach(p => {
+          const discountPercent = p.salePrice ? Math.round(((p.price - p.salePrice) / p.price) * 100) : 0;
+          const priceHtml = p.salePrice 
+            ? `<span class="price-main">${formatPrice(p.salePrice)}</span><span class="price-strike">${formatPrice(p.price)}</span>`
+            : `<span class="price-main">${formatPrice(p.price)}</span>`;
+          
+          const tagHtml = p.salePrice ? `<span class="product-tag">-${discountPercent}% SALE</span>` : "";
+          const stockHtml = p.inStock 
+            ? `<span class="product-stock stock-in"><span class="dot"></span> In Stock</span>`
+            : `<span class="product-stock stock-out"><span class="dot"></span> Out of Stock</span>`;
+          
+          const actionBtn = p.inStock
+            ? `<button class="btn btn-primary" onclick="window.quickAddToCart('${p.id}')"><i class="fa-solid fa-cart-plus"></i> Add</button>`
+            : `<button class="btn btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;"><i class="fa-solid fa-ban"></i> Out</button>`;
+          
+          html += `
+            <div class="product-card" id="featured-p-${p.id}">
+              ${tagHtml}
+              <div class="product-card-media" onclick="openDetails('${p.id}')">
+                <img src="${p.image || 'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=400'}" alt="${p.name}" class="product-card-img">
+                <div class="product-card-overlay">
+                  <div class="product-card-btn"><i class="fa-solid fa-expand"></i></div>
+                </div>
+              </div>
+              <div class="product-card-content">
+                <span class="product-brand">${p.brand || 'Generic'}</span>
+                <h3 class="product-title" onclick="openDetails('${p.id}')">${p.name}</h3>
+                ${stockHtml}
+                <div class="product-price-row">
+                  ${priceHtml}
+                </div>
+                <div class="product-card-footer">
+                  <button class="btn btn-secondary" onclick="openDetails('${p.id}')"><i class="fa-solid fa-circle-info"></i> Info</button>
+                  ${actionBtn}
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        
+        grid.innerHTML = html;
+      } catch (err) {
+        console.error("Error displaying featured products:", err);
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--error); padding: 40px 0;">Failed to load products. Check your connection.</div>`;
+      }
+    });
+
+    // Helper to safely add to cart from ID lookup
+    window.quickAddToCart = async function(id) {
+      const products = await window.DB.getProducts();
+      const p = products.find(prod => prod.id === id);
+      if (p) window.addToCart(p, 1);
+    };
+
+    // Product Detail Modal management
+    async function openDetails(id) {
+      const modal = document.getElementById("product-detail-modal");
+      if (!modal) return;
+      
+      try {
+        const products = await window.DB.getProducts();
+        const p = products.find(prod => prod.id === id);
+        if (!p) return;
+        
+        const priceHtml = p.salePrice 
+          ? `<span class="detail-price">${formatPrice(p.salePrice)}</span><span class="detail-price-strike">${formatPrice(p.price)}</span>`
+          : `<span class="detail-price">${formatPrice(p.price)}</span>`;
+          
+        const stockHtml = p.inStock 
+          ? `<span class="product-stock stock-in" style="font-size:13px;"><span class="dot"></span> IN STOCK - Ready to Deliver</span>`
+          : `<span class="product-stock stock-out" style="font-size:13px;"><span class="dot"></span> OUT OF STOCK - Restocking Soon</span>`;
+
+        const actionBtn = p.inStock
+          ? `<button class="btn btn-primary" onclick="buyNow('${p.id}')"><i class="fa-solid fa-cart-plus"></i> Add to Shopping Cart</button>`
+          : `<button class="btn btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;"><i class="fa-solid fa-ban"></i> Product Out of Stock</button>`;
+        
+        modal.innerHTML = `
+          <div class="detail-modal-content">
+            <button class="detail-modal-close" onclick="closeDetails()">&times;</button>
+            <div class="detail-grid">
+              <div class="detail-media">
+                <div class="detail-img-zoom-container" id="zoom-container">
+                  <img src="${p.image || 'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=600'}" alt="${p.name}" class="detail-img" id="zoom-img">
+                </div>
+              </div>
+              <div class="detail-info">
+                <span class="detail-brand">${p.brand || 'Generic'}</span>
+                <h2 class="detail-title">${p.name}</h2>
+                <div class="detail-price-row">
+                  ${priceHtml}
+                </div>
+                ${stockHtml}
+                
+                <div style="margin: 20px 0;">
+                  <div class="detail-tabs">
+                    <button class="detail-tab-btn active" onclick="switchTab('desc', this)">Description</button>
+                    <button class="detail-tab-btn" onclick="switchTab('nutr', this)">Nutrition</button>
+                    <button class="detail-tab-btn" onclick="switchTab('usage', this)">Usage</button>
+                  </div>
+                  <div class="detail-tab-content" id="tab-content-root">${p.description || 'No description available.'}</div>
+                </div>
+                
+                <div class="detail-actions">
+                  <div class="detail-qty-input">
+                    <button onclick="adjustDetailQty(-1)">-</button>
+                    <span id="detail-qty-val">1</span>
+                    <button onclick="adjustDetailQty(1)">+</button>
+                  </div>
+                  ${actionBtn}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Save description/nutrition/howToUse for tab switching
+        modal.dataset.desc = p.description || 'No description available.';
+        modal.dataset.nutr = p.nutrition || 'No nutritional information available.';
+        modal.dataset.usage = p.howToUse || 'No instructions specified.';
+        modal.dataset.qty = 1;
+        
+        modal.classList.add("open");
+        document.getElementById("cart-overlay").classList.add("show");
+        
+        // Enable Image Zooming feature
+        setupZoom();
+      } catch (err) {
+        console.error("Error opening details:", err);
+      }
+    }
+    
+    function closeDetails() {
+      const modal = document.getElementById("product-detail-modal");
+      if (modal) modal.classList.remove("open");
+      
+      // Only hide overlay if cart is not open
+      const cartDrawer = document.getElementById("cart-drawer");
+      if (cartDrawer && !cartDrawer.classList.contains("open")) {
+        document.getElementById("cart-overlay").classList.remove("show");
+      }
+    }
+    
+    function switchTab(tabName, btnEl) {
+      const modal = document.getElementById("product-detail-modal");
+      const contentEl = document.getElementById("tab-content-root");
+      
+      // Update Active Button
+      const buttons = btnEl.parentNode.querySelectorAll(".detail-tab-btn");
+      buttons.forEach(btn => btn.classList.remove("active"));
+      btnEl.classList.add("active");
+      
+      // Update Content
+      if (tabName === 'desc') contentEl.textContent = modal.dataset.desc;
+      if (tabName === 'nutr') contentEl.textContent = modal.dataset.nutr;
+      if (tabName === 'usage') contentEl.textContent = modal.dataset.usage;
+    }
+    
+    function adjustDetailQty(delta) {
+      const modal = document.getElementById("product-detail-modal");
+      let qty = parseInt(modal.dataset.qty) || 1;
+      qty += delta;
+      if (qty < 1) qty = 1;
+      modal.dataset.qty = qty;
+      document.getElementById("detail-qty-val").textContent = qty;
+    }
+    
+    async function buyNow(id) {
+      const products = await window.DB.getProducts();
+      const p = products.find(prod => prod.id === id);
+      if (!p) return;
+      const modal = document.getElementById("product-detail-modal");
+      const qty = parseInt(modal.dataset.qty) || 1;
+      window.addToCart(p, qty);
+      closeDetails();
+    }
+    
+    function setupZoom() {
+      const container = document.getElementById("zoom-container");
+      const img = document.getElementById("zoom-img");
+      if (!container || !img) return;
+      
+      container.addEventListener("mousemove", (e) => {
+        const { left, top, width, height } = container.getBoundingClientRect();
+        const x = ((e.clientX - left) / width) * 100;
+        const y = ((e.clientY - top) / height) * 100;
+        
+        img.style.transformOrigin = `${x}% ${y}%`;
+        img.style.transform = "scale(1.8)";
+      });
+      
+      container.addEventListener("mouseleave", () => {
+        img.style.transform = "scale(1)";
+        img.style.transformOrigin = "center center";
+      });
+    }
+  </script>
+</body>
+</html>

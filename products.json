@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1",
+    "name": "100% Whey Gold Standard (2.27kg / 5lbs)",
+    "brand": "Optimum Nutrition",
+    "category": "Whey Protein",
+    "price": 24500,
+    "salePrice": 22500,
+    "image": "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=600&auto=format&fit=crop",
+    "inStock": true,
+    "description": "The world's best-selling whey protein powder. Packs 24g of premium whey protein, primarily whey protein isolate, to support muscle building and recovery after intense training session.",
+    "nutrition": "Calories: 120 kcal\nProtein: 24g\nCarbs: 3g\nFat: 1.5g\nBCAAs: 5.5g",
+    "howToUse": "Mix 1 scoop with 200-250ml of cold water or milk. Consume 30-60 minutes post-workout or as a high-protein snack anytime."
+  },
+  {
+    "id": "2",
+    "name": "Platinum 100% Creatine Monohydrate (250g)",
+    "brand": "MuscleTech",
+    "category": "Creatine",
+    "price": 9500,
+    "salePrice": 8500,
+    "image": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop",
+    "inStock": true,
+    "description": "Ultra-pure micronized creatine powder designed to increase lean muscle, improve strength, and amplify muscle power during workouts. Dissolves easily in water.",
+    "nutrition": "Creatine Monohydrate: 5g per serving\nCalories: 0 kcal\nSugar: 0g",
+    "howToUse": "Loading Phase (Days 1-5): Mix 1 scoop with water 4 times daily.\nMaintenance Phase (Day 6+): Mix 1 scoop with water once daily, preferably post-workout."
+  },
+  {
+    "id": "3",
+    "name": "C4 Original Pre-Workout (30 Servings)",
+    "brand": "Cellucor",
+    "category": "Pre-Workout",
+    "price": 14500,
+    "salePrice": 13500,
+    "image": "https://images.unsplash.com/photo-1579758629938-03607ccdbaba?q=80&w=600&auto=format&fit=crop",
+    "inStock": true,
+    "description": "Explosive energy, heightened focus, and an overwhelming urge to tackle any challenge. C4 Original is America's #1 selling pre-workout, trusted by beginners and elite competitors alike.",
+    "nutrition": "CarnoSyn Beta-Alanine: 1.6g\nCreatine Nitrate: 1g\nCaffeine: 150mg\nArginine Alpha-Ketoglutarate: 1g",
+    "howToUse": "Take 1 scoop mixed with 180-240ml of water 20-30 minutes before training. Do not exceed 2 scoops per day."
+  },
+  {
+    "id": "4",
+    "name": "Lipo-6 Black Ultra Concentrate (60 Black-Caps)",
+    "brand": "Nutrex Research",
+    "category": "Fat Burners",
+    "price": 12000,
+    "salePrice": 10500,
+    "image": "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=600&auto=format&fit=crop",
+    "inStock": true,
+    "description": "One-pill-only ultra concentrated fat burner. Assists in burning fat, boosting energy levels, reducing appetite, and promoting metabolic rate boost for faster weight loss.",
+    "nutrition": "Caffeine Anhydrous: 200mg\nTheobromine Anhydrous: 20mg\nYohimbine HCl: 4.5mg\nSynephrine HCl: 20mg",
+    "howToUse": "Take 1 capsule in the morning and 1 capsule in the afternoon on an empty stomach. Never take more than 2 capsules in a 24-hour period."
+  },
+  {
+    "id": "5",
+    "name": "Opti-Men Multivitamin (90 Tablets)",
+    "brand": "Optimum Nutrition",
+    "category": "Vitamins",
+    "price": 11000,
+    "salePrice": null,
+    "image": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?q=80&w=600&auto=format&fit=crop",
+    "inStock": false,
+    "description": "A comprehensive nutrient optimization system providing 75+ active ingredients in 4 performance blends. Specifically formulated to support the active lifestyle of men.",
+    "nutrition": "Vitamins & Minerals: 25+ essential nutrients\nAmino Men Blend: L-Arginine, L-Glutamine, L-Valine\nPhyto Men Blend: Fruit & Vegetable concentrates",
+    "howToUse": "Consume 3 tablets daily with food. Best taken with breakfast to kickstart your daily metabolic support."
+  }
+]

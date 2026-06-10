@@ -1,0 +1,32 @@
+[
+  {
+    "id": "cat_1",
+    "name": "Whey Protein",
+    "description": "Muscle Building",
+    "icon": "fa-prescription-bottle-supplement"
+  },
+  {
+    "id": "cat_2",
+    "name": "Creatine",
+    "description": "Strength & Power",
+    "icon": "fa-bolt"
+  },
+  {
+    "id": "cat_3",
+    "name": "Pre-Workout",
+    "description": "Explosive Energy",
+    "icon": "fa-fire-flame-curved"
+  },
+  {
+    "id": "cat_4",
+    "name": "Fat Burners",
+    "description": "Shred Fat Fast",
+    "icon": "fa-droplet-slash"
+  },
+  {
+    "id": "cat_5",
+    "name": "Vitamins",
+    "description": "Health & Wellness",
+    "icon": "fa-capsules"
+  }
+]

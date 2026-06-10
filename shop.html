@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Supplement Catalog | Power Zone Colombo</title>
+  <meta name="description" content="Browse our wide selection of whey proteins, creatines, pre-workouts, and mass gainers. Filter by brand, price, and category. Instant delivery in Colombo.">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Dynamic Header Root -->
+  <div id="header-root"></div>
+
+  <!-- Page Banner -->
+  <section class="page-banner" id="shop-banner">
+    <div class="container">
+      <h1>Supplement Store</h1>
+      <p>100% genuine products directly imported from top international brands.</p>
+    </div>
+  </section>
+
+  <!-- Shop Section -->
+  <section class="section" style="padding: 40px 0 80px 0;">
+    <div class="container">
+      <div class="shop-controls">
+        
+        <!-- Filter Sidebar -->
+        <aside class="shop-sidebar" id="filter-sidebar">
+          
+          <!-- Search Widget -->
+          <div class="sidebar-widget">
+            <h3>Search Product</h3>
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="search-box" placeholder="e.g. Creatine, Whey...">
+            </div>
+          </div>
+          
+          <!-- Categories Filter -->
+          <div class="sidebar-widget">
+            <h3>Categories</h3>
+            <ul class="filter-list" id="category-filter-list">
+              <li class="filter-item">
+                <label><input type="checkbox" class="category-checkbox" value="Whey Protein"> Whey Protein</label>
+              </li>
+              <li class="filter-item">
+                <label><input type="checkbox" class="category-checkbox" value="Creatine"> Creatine</label>
+              </li>
+              <li class="filter-item">
+                <label><input type="checkbox" class="category-checkbox" value="Pre-Workout"> Pre-Workout</label>
+              </li>
+              <li class="filter-item">
+                <label><input type="checkbox" class="category-checkbox" value="Fat Burners"> Fat Burners</label>
+              </li>
+              <li class="filter-item">
+                <label><input type="checkbox" class="category-checkbox" value="Vitamins"> Vitamins</label>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Dynamic Brands Filter -->
+          <div class="sidebar-widget">
+            <h3>Brands</h3>
+            <ul class="filter-list" id="brand-filter-list">
+              <!-- Loaded dynamically from current products inventory -->
+              <li style="color: var(--text-muted); font-size: 13px;">Loading brands...</li>
+            </ul>
+          </div>
+          
+          <!-- Price Range Filter -->
+          <div class="sidebar-widget">
+            <h3>Price Range (LKR)</h3>
+            <div class="price-range-inputs">
+              <input type="number" id="price-min" placeholder="Min" min="0">
+              <span>-</span>
+              <input type="number" id="price-max" placeholder="Max" min="0">
+            </div>
+          </div>
+          
+          <button class="btn btn-secondary" id="reset-filters-btn" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 13px;">
+            <i class="fa-solid fa-arrow-rotate-left"></i> Reset All Filters
+          </button>
+          
+        </aside>
+        
+        <!-- Main Product Panel -->
+        <main class="shop-main">
+          
+          <!-- Shop Toolbar -->
+          <div class="shop-toolbar">
+            <div class="results-count" id="results-count-text">
+              Showing 0 products
+            </div>
+            <div class="sort-select">
+              <select id="sort-dropdown">
+                <option value="default">Sort by: Best Match</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name-asc">Alphabetical: A-Z</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Products Grid -->
+          <div class="products-grid" id="shop-products-grid">
+            <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 60px 0;">
+              <i class="fa-solid fa-spinner fa-spin" style="font-size: 32px; color: var(--primary);"></i>
+              <p style="margin-top: 10px;">Loading catalog...</p>
+            </div>
+          </div>
+          
+        </main>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Footer Root -->
+  <div id="footer-root"></div>
+
+  <!-- Product Detail Modal Placeholder -->
+  <div class="detail-modal" id="product-detail-modal">
+    <!-- Loaded dynamically on click -->
+  </div>
+
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Configurations & DB Layer -->
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Page Logic Script -->
+  <script>
+    let allProducts = [];
+    let activeFilters = {
+      search: "",
+      categories: [],
+      brands: [],
+      minPrice: null,
+      maxPrice: null,
+      sort: "default"
+    };
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Load Products
+      try {
+        allProducts = await window.DB.getProducts();
+        
+        // 1. Initialize Filters from URL params (e.g. ?category=Creatine)
+        parseUrlParams();
+        
+        // 2. Build brand options list dynamically based on loaded inventory
+        buildBrandFilters();
+        
+        // 3. Render Catalog
+        applyFiltersAndRender();
+        
+        // 4. Register Event Listeners
+        registerListeners();
+      } catch (err) {
+        console.error("Error loading shop catalog:", err);
+        document.getElementById("shop-products-grid").innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; color: var(--error); padding: 40px 0;">
+            <i class="fa-solid fa-circle-exclamation" style="font-size: 36px; margin-bottom: 10px;"></i>
+            <p>Failed to load products. Check your database setup.</p>
+          </div>`;
+      }
+    });
+
+    function parseUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const catParam = params.get("category");
+      if (catParam) {
+        activeFilters.categories.push(catParam);
+        
+        // Check corresponding checkbox
+        const checkboxes = document.querySelectorAll(".category-checkbox");
+        checkboxes.forEach(cb => {
+          if (cb.value === catParam) cb.checked = true;
+        });
+      }
+      
+      const searchParam = params.get("search");
+      if (searchParam) {
+        activeFilters.search = searchParam;
+        document.getElementById("search-box").value = searchParam;
+      }
+    }
+
+    function buildBrandFilters() {
+      const brandUl = document.getElementById("brand-filter-list");
+      if (!brandUl) return;
+      
+      // Extract unique brands (excluding empty/null values)
+      const brands = [...new Set(allProducts.map(p => p.brand).filter(b => b))].sort();
+      
+      if (brands.length === 0) {
+        brandUl.innerHTML = `<li style="color: var(--text-muted); font-size: 13px;">No brands found</li>`;
+        return;
+      }
+      
+      let html = "";
+      brands.forEach(brand => {
+        html += `
+          <li class="filter-item">
+            <label><input type="checkbox" class="brand-checkbox" value="${brand}"> ${brand}</label>
+          </li>
+        `;
+      });
+      brandUl.innerHTML = html;
+    }
+
+    function registerListeners() {
+      // Searchbox
+      document.getElementById("search-box").addEventListener("input", (e) => {
+        activeFilters.search = e.target.value.trim().toLowerCase();
+        applyFiltersAndRender();
+      });
+      
+      // Category Checkboxes
+      document.querySelectorAll(".category-checkbox").forEach(cb => {
+        cb.addEventListener("change", (e) => {
+          if (e.target.checked) {
+            activeFilters.categories.push(e.target.value);
+          } else {
+            activeFilters.categories = activeFilters.categories.filter(c => c !== e.target.value);
+          }
+          applyFiltersAndRender();
+        });
+      });
+      
+      // Dynamic Brand Checkboxes (use delegation)
+      document.getElementById("brand-filter-list").addEventListener("change", (e) => {
+        if (e.target.classList.contains("brand-checkbox")) {
+          if (e.target.checked) {
+            activeFilters.brands.push(e.target.value);
+          } else {
+            activeFilters.brands = activeFilters.brands.filter(b => b !== e.target.value);
+          }
+          applyFiltersAndRender();
+        }
+      });
+      
+      // Prices Min/Max
+      document.getElementById("price-min").addEventListener("input", (e) => {
+        activeFilters.minPrice = e.target.value ? parseFloat(e.target.value) : null;
+        applyFiltersAndRender();
+      });
+      document.getElementById("price-max").addEventListener("input", (e) => {
+        activeFilters.maxPrice = e.target.value ? parseFloat(e.target.value) : null;
+        applyFiltersAndRender();
+      });
+      
+      // Reset button
+      document.getElementById("reset-filters-btn").addEventListener("click", () => {
+        activeFilters = {
+          search: "",
+          categories: [],
+          brands: [],
+          minPrice: null,
+          maxPrice: null,
+          sort: "default"
+        };
+        
+        // Reset Inputs
+        document.getElementById("search-box").value = "";
+        document.getElementById("price-min").value = "";
+        document.getElementById("price-max").value = "";
+        document.getElementById("sort-dropdown").value = "default";
+        
+        document.querySelectorAll(".category-checkbox, .brand-checkbox").forEach(cb => cb.checked = false);
+        
+        applyFiltersAndRender();
+      });
+      
+      // Sort Dropdown
+      document.getElementById("sort-dropdown").addEventListener("change", (e) => {
+        activeFilters.sort = e.target.value;
+        applyFiltersAndRender();
+      });
+    }
+
+    function applyFiltersAndRender() {
+      const grid = document.getElementById("shop-products-grid");
+      const countText = document.getElementById("results-count-text");
+      if (!grid || !countText) return;
+      
+      // 1. Filter Products
+      let filtered = allProducts.filter(p => {
+        // Search Filter
+        if (activeFilters.search) {
+          const nameMatch = p.name.toLowerCase().includes(activeFilters.search);
+          const brandMatch = p.brand && p.brand.toLowerCase().includes(activeFilters.search);
+          const catMatch = p.category && p.category.toLowerCase().includes(activeFilters.search);
+          if (!nameMatch && !brandMatch && !catMatch) return false;
+        }
+        
+        // Category Filter
+        if (activeFilters.categories.length > 0) {
+          if (!p.category || !activeFilters.categories.includes(p.category)) return false;
+        }
+        
+        // Brand Filter
+        if (activeFilters.brands.length > 0) {
+          if (!p.brand || !activeFilters.brands.includes(p.brand)) return false;
+        }
+        
+        // Price Range Filter
+        const actualPrice = p.salePrice || p.price;
+        if (activeFilters.minPrice !== null && actualPrice < activeFilters.minPrice) return false;
+        if (activeFilters.maxPrice !== null && actualPrice > activeFilters.maxPrice) return false;
+        
+        return true;
+      });
+      
+      // 2. Sort Products
+      if (activeFilters.sort === "price-low") {
+        filtered.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price));
+      } else if (activeFilters.sort === "price-high") {
+        filtered.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
+      } else if (activeFilters.sort === "name-asc") {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      }
+      
+      // 3. Update Results Count Text
+      countText.textContent = `Showing ${filtered.length} products`;
+      
+      // 4. Render Grid
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 60px 0;">
+            <i class="fa-solid fa-cubes-stacked" style="font-size: 48px; margin-bottom: 16px;"></i>
+            <p>No products match your filter criteria.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      let html = "";
+      filtered.forEach(p => {
+        const discountPercent = p.salePrice ? Math.round(((p.price - p.salePrice) / p.price) * 100) : 0;
+        const priceHtml = p.salePrice 
+          ? `<span class="price-main">${formatPrice(p.salePrice)}</span><span class="price-strike">${formatPrice(p.price)}</span>`
+          : `<span class="price-main">${formatPrice(p.price)}</span>`;
+        
+        const tagHtml = p.salePrice ? `<span class="product-tag">-${discountPercent}% SALE</span>` : "";
+        const stockHtml = p.inStock 
+          ? `<span class="product-stock stock-in"><span class="dot"></span> In Stock</span>`
+          : `<span class="product-stock stock-out"><span class="dot"></span> Out of Stock</span>`;
+        
+        const actionBtn = p.inStock
+          ? `<button class="btn btn-primary" onclick="window.quickAddToCart('${p.id}')"><i class="fa-solid fa-cart-plus"></i> Add</button>`
+          : `<button class="btn btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;"><i class="fa-solid fa-ban"></i> Out</button>`;
+        
+        html += `
+          <div class="product-card" id="catalog-p-${p.id}">
+            ${tagHtml}
+            <div class="product-card-media" onclick="openDetails('${p.id}')">
+              <img src="${p.image || 'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=400'}" alt="${p.name}" class="product-card-img">
+              <div class="product-card-overlay">
+                <div class="product-card-btn"><i class="fa-solid fa-expand"></i></div>
+              </div>
+            </div>
+            <div class="product-card-content">
+              <span class="product-brand">${p.brand || 'Generic'}</span>
+              <h3 class="product-title" onclick="openDetails('${p.id}')">${p.name}</h3>
+              ${stockHtml}
+              <div class="product-price-row">
+                ${priceHtml}
+              </div>
+              <div class="product-card-footer">
+                <button class="btn btn-secondary" onclick="openDetails('${p.id}')"><i class="fa-solid fa-circle-info"></i> Info</button>
+                ${actionBtn}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      grid.innerHTML = html;
+    }
+
+    // Helper to safely add to cart from ID lookup
+    window.quickAddToCart = async function(id) {
+      const products = await window.DB.getProducts();
+      const p = products.find(prod => prod.id === id);
+      if (p) window.addToCart(p, 1);
+    };
+
+    // Product Detail Modal management
+    async function openDetails(id) {
+      const modal = document.getElementById("product-detail-modal");
+      if (!modal) return;
+      
+      try {
+        const products = await window.DB.getProducts();
+        const p = products.find(prod => prod.id === id);
+        if (!p) return;
+        
+        const priceHtml = p.salePrice 
+          ? `<span class="detail-price">${formatPrice(p.salePrice)}</span><span class="detail-price-strike">${formatPrice(p.price)}</span>`
+          : `<span class="detail-price">${formatPrice(p.price)}</span>`;
+          
+        const stockHtml = p.inStock 
+          ? `<span class="product-stock stock-in" style="font-size:13px;"><span class="dot"></span> IN STOCK - Ready to Deliver</span>`
+          : `<span class="product-stock stock-out" style="font-size:13px;"><span class="dot"></span> OUT OF STOCK - Restocking Soon</span>`;
+
+        const actionBtn = p.inStock
+          ? `<button class="btn btn-primary" onclick="buyNow('${p.id}')"><i class="fa-solid fa-cart-plus"></i> Add to Shopping Cart</button>`
+          : `<button class="btn btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;"><i class="fa-solid fa-ban"></i> Product Out of Stock</button>`;
+        
+        modal.innerHTML = `
+          <div class="detail-modal-content">
+            <button class="detail-modal-close" onclick="closeDetails()">&times;</button>
+            <div class="detail-grid">
+              <div class="detail-media">
+                <div class="detail-img-zoom-container" id="zoom-container">
+                  <img src="${p.image || 'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=600'}" alt="${p.name}" class="detail-img" id="zoom-img">
+                </div>
+              </div>
+              <div class="detail-info">
+                <span class="detail-brand">${p.brand || 'Generic'}</span>
+                <h2 class="detail-title">${p.name}</h2>
+                <div class="detail-price-row">
+                  ${priceHtml}
+                </div>
+                ${stockHtml}
+                
+                <div style="margin: 20px 0;">
+                  <div class="detail-tabs">
+                    <button class="detail-tab-btn active" onclick="switchTab('desc', this)">Description</button>
+                    <button class="detail-tab-btn" onclick="switchTab('nutr', this)">Nutrition</button>
+                    <button class="detail-tab-btn" onclick="switchTab('usage', this)">Usage</button>
+                  </div>
+                  <div class="detail-tab-content" id="tab-content-root">${p.description || 'No description available.'}</div>
+                </div>
+                
+                <div class="detail-actions">
+                  <div class="detail-qty-input">
+                    <button onclick="adjustDetailQty(-1)">-</button>
+                    <span id="detail-qty-val">1</span>
+                    <button onclick="adjustDetailQty(1)">+</button>
+                  </div>
+                  ${actionBtn}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Save description/nutrition/howToUse for tab switching
+        modal.dataset.desc = p.description || 'No description available.';
+        modal.dataset.nutr = p.nutrition || 'No nutritional information available.';
+        modal.dataset.usage = p.howToUse || 'No instructions specified.';
+        modal.dataset.qty = 1;
+        
+        modal.classList.add("open");
+        document.getElementById("cart-overlay").classList.add("show");
+        
+        setupZoom();
+      } catch (err) {
+        console.error("Error opening details:", err);
+      }
+    }
+    
+    function closeDetails() {
+      const modal = document.getElementById("product-detail-modal");
+      if (modal) modal.classList.remove("open");
+      
+      const cartDrawer = document.getElementById("cart-drawer");
+      if (cartDrawer && !cartDrawer.classList.contains("open")) {
+        document.getElementById("cart-overlay").classList.remove("show");
+      }
+    }
+    
+    function switchTab(tabName, btnEl) {
+      const modal = document.getElementById("product-detail-modal");
+      const contentEl = document.getElementById("tab-content-root");
+      
+      const buttons = btnEl.parentNode.querySelectorAll(".detail-tab-btn");
+      buttons.forEach(btn => btn.classList.remove("active"));
+      btnEl.classList.add("active");
+      
+      if (tabName === 'desc') contentEl.textContent = modal.dataset.desc;
+      if (tabName === 'nutr') contentEl.textContent = modal.dataset.nutr;
+      if (tabName === 'usage') contentEl.textContent = modal.dataset.usage;
+    }
+    
+    function adjustDetailQty(delta) {
+      const modal = document.getElementById("product-detail-modal");
+      let qty = parseInt(modal.dataset.qty) || 1;
+      qty += delta;
+      if (qty < 1) qty = 1;
+      modal.dataset.qty = qty;
+      document.getElementById("detail-qty-val").textContent = qty;
+    }
+    
+    async function buyNow(id) {
+      const products = await window.DB.getProducts();
+      const p = products.find(prod => prod.id === id);
+      if (!p) return;
+      const modal = document.getElementById("product-detail-modal");
+      const qty = parseInt(modal.dataset.qty) || 1;
+      window.addToCart(p, qty);
+      closeDetails();
+    }
+    
+    function setupZoom() {
+      const container = document.getElementById("zoom-container");
+      const img = document.getElementById("zoom-img");
+      if (!container || !img) return;
+      
+      container.addEventListener("mousemove", (e) => {
+        const { left, top, width, height } = container.getBoundingClientRect();
+        const x = ((e.clientX - left) / width) * 100;
+        const y = ((e.clientY - top) / height) * 100;
+        
+        img.style.transformOrigin = `${x}% ${y}%`;
+        img.style.transform = "scale(1.8)";
+      });
+      
+      container.addEventListener("mouseleave", () => {
+        img.style.transform = "scale(1)";
+        img.style.transformOrigin = "center center";
+      });
+    }
+  </script>
+</body>
+</html>

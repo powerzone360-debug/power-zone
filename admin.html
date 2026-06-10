@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Power Zone Supplement Store</title>
+  <meta name="robots" content="noindex, nofollow">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ---- Admin Tab Navigation ---- */
+    .admin-tabs {
+      display: flex;
+      gap: 8px;
+      margin-top: 28px;
+      border-bottom: 2px solid var(--border-color, #2a2a2a);
+      padding-bottom: 0;
+    }
+    .admin-tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-secondary, #888);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 10px 20px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      bottom: -2px;
+      border-radius: 6px 6px 0 0;
+    }
+    .admin-tab-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.04);
+    }
+    .admin-tab-btn.active {
+      color: var(--primary, #ff0f23);
+      border-bottom-color: var(--primary, #ff0f23);
+      background: rgba(255,15,35,0.06);
+    }
+    .admin-tab-btn i { margin-right: 7px; }
+
+    /* ---- Tab Panels ---- */
+    .admin-tab-panel { display: none; margin-top: 24px; }
+    .admin-tab-panel.active { display: block; }
+
+    /* ---- Category Grid Cards ---- */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 4px;
+    }
+    .cat-card {
+      background: var(--bg-surface, #141414);
+      border: 1px solid var(--border-color, #2a2a2a);
+      border-radius: 12px;
+      padding: 22px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+    }
+    .cat-card:hover {
+      border-color: var(--primary, #ff0f23);
+      transform: translateY(-2px);
+    }
+    .cat-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(255,15,35,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--primary, #ff0f23);
+    }
+    .cat-card-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+    .cat-card-desc {
+      font-size: 12px;
+      color: var(--text-muted, #555);
+      margin: 0;
+    }
+    .cat-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .cat-action-btn {
+      flex: 1;
+      padding: 8px 0;
+      border: 1px solid var(--border-color, #2a2a2a);
+      background: transparent;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-secondary, #888);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .cat-action-btn:hover { border-color: var(--primary,#ff0f23); color: var(--primary,#ff0f23); }
+    .cat-action-btn.delete:hover { border-color: #ff4444; color: #ff4444; }
+
+    /* ---- Icon Picker ---- */
+    .icon-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+    .icon-option {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--border-color, #2a2a2a);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-secondary, #888);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .icon-option:hover, .icon-option.selected {
+      border-color: var(--primary, #ff0f23);
+      color: var(--primary, #ff0f23);
+      background: rgba(255,15,35,0.1);
+    }
+    .selected-icon-preview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(255,15,35,0.07);
+      border: 1px solid rgba(255,15,35,0.3);
+      border-radius: 8px;
+      color: var(--primary, #ff0f23);
+      font-size: 14px;
+    }
+    .selected-icon-preview i { font-size: 20px; }
+
+    /* ---- No Categories Empty State ---- */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted, #555);
+    }
+    .empty-state i { font-size: 48px; margin-bottom: 16px; display: block; }
+    .empty-state p { font-size: 15px; }
+
+    /* ---- Categories Backup Alert ---- */
+    .cat-alert-box {
+      background: rgba(255, 180, 0, 0.07);
+      border: 1px solid rgba(255, 180, 0, 0.25);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #ccc;
+      line-height: 1.6;
+    }
+    .cat-alert-box strong { color: #ffb400; }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic Header Root -->
+  <div id="header-root"></div>
+
+  <!-- Admin Login Protection Overlay -->
+  <div class="admin-login-overlay" id="login-overlay">
+    <div class="admin-login-box">
+      <img src="pz.png" alt="Power Zone Logo" style="height: 90px; width: auto; filter: drop-shadow(0 0 10px rgba(255,15,35,0.4));">
+      <h2>Staff Sign In</h2>
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label for="admin-pass-input" style="text-align: left;">Admin Password</label>
+          <input type="password" id="admin-pass-input" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-lock-open"></i> Unlock Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Admin Content -->
+  <section class="admin-container section" id="admin-dashboard-root" style="display: none;">
+    <div class="container">
+      
+      <!-- Admin Header Control Row -->
+      <div class="admin-header-row">
+        <div>
+          <h1 style="text-transform: uppercase;">Inventory Manager</h1>
+          <p id="db-status-display" class="admin-db-status local">
+            <i class="fa-solid fa-circle"></i> Local Storage Mode (Offline)
+          </p>
+        </div>
+        
+        <div class="admin-actions-bar" id="admin-actions-bar">
+          <!-- Actions injected based on active tab -->
+        </div>
+      </div>
+
+      <!-- Sync Guide Info Box (Only visible in LocalStorage mode) -->
+      <div class="admin-alert-box" id="local-mode-alert" style="margin-top: 24px; display: none;">
+        <h4>💡 Git Sync Guide (Local Storage Mode)</h4>
+        <p>Since you are hosting on GitHub Pages and currently using LocalStorage: updates you make here are only saved in your current browser. To update the website for all public visitors, click <strong>"Backup &amp; Sync"</strong>, copy the JSON, and paste it into the corresponding <code>.json</code> file in your project, then commit/push to GitHub.</p>
+      </div>
+
+      <!-- ===== TAB NAV ===== -->
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" id="tab-btn-products" onclick="switchTab('products')">
+          <i class="fa-solid fa-boxes-stacked"></i> Products
+        </button>
+        <button class="admin-tab-btn" id="tab-btn-categories" onclick="switchTab('categories')">
+          <i class="fa-solid fa-tags"></i> Categories
+        </button>
+      </div>
+
+      <!-- ===== PRODUCTS TAB PANEL ===== -->
+      <div class="admin-tab-panel active" id="tab-panel-products">
+        <div class="admin-table-wrapper">
+          <table class="admin-table" id="admin-products-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Sale Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-products-tbody">
+              <tr>
+                <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                  <i class="fa-solid fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 10px;"></i>
+                  <p>Loading inventory...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== CATEGORIES TAB PANEL ===== -->
+      <div class="admin-tab-panel" id="tab-panel-categories">
+        <div class="cat-alert-box" id="cat-sync-alert" style="display: none;">
+          <strong>📋 Sync Required:</strong> After adding or deleting categories, click <strong>"Backup & Sync"</strong> → <strong>"Copy Categories JSON"</strong> and paste into your <code>categories.json</code> file, then push to GitHub.
+        </div>
+        <div id="categories-grid-root" class="categories-grid">
+          <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 24px;"></i>
+            <p style="margin-top: 12px;">Loading categories...</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== PRODUCT FORM MODAL ==================== -->
+  <div class="admin-modal" id="product-form-modal">
+    <div class="admin-modal-content">
+      <button class="detail-modal-close" onclick="closeProductModal()">&times;</button>
+      <h2 id="modal-title-text" style="text-transform: uppercase; margin-bottom: 24px; border-left: 4px solid var(--primary); padding-left: 14px;">Add New Product</h2>
+      
+      <form id="product-crud-form">
+        <input type="hidden" id="edit-product-id">
+        
+        <div class="admin-form-grid">
+          <!-- Name -->
+          <div class="form-group admin-form-full">
+            <label for="form-name">Product Name *</label>
+            <input type="text" id="form-name" required placeholder="e.g. Gold Standard 100% Whey (5lbs)">
+          </div>
+          
+          <!-- Brand -->
+          <div class="form-group">
+            <label for="form-brand">Brand Name *</label>
+            <input type="text" id="form-brand" required placeholder="e.g. Optimum Nutrition">
+          </div>
+          
+          <!-- Category -->
+          <div class="form-group">
+            <label for="form-category">Category *</label>
+            <select id="form-category" required>
+              <option value="" disabled selected>Select Category</option>
+            </select>
+          </div>
+          
+          <!-- Original Price -->
+          <div class="form-group">
+            <label for="form-price">Original Price (LKR) *</label>
+            <input type="number" id="form-price" required min="0" placeholder="e.g. 24500">
+          </div>
+          
+          <!-- Discount / Sale Price -->
+          <div class="form-group">
+            <label for="form-sale-price">Discounted Price (LKR) (Optional)</label>
+            <input type="number" id="form-sale-price" min="0" placeholder="e.g. 22500">
+          </div>
+          
+          <!-- Image URL -->
+          <div class="form-group">
+            <label for="form-image-url">Image URL (Internet Link)</label>
+            <input type="url" id="form-image-url" placeholder="https://..." onchange="handleImageUrlChange(this.value)">
+          </div>
+          
+          <!-- Image file uploader -->
+          <div class="form-group">
+            <label for="form-image-file">Or Upload Image (Auto-convert to DB)</label>
+            <input type="file" id="form-image-file" accept="image/*" onchange="handleImageFileSelect(event)">
+          </div>
+          
+          <!-- Image Preview -->
+          <div class="form-group admin-form-full">
+            <label>Image Preview</label>
+            <div class="img-preview-box">
+              <img id="form-image-preview" src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=200" alt="Supplement Preview">
+            </div>
+          </div>
+          
+          <!-- Stock status -->
+          <div class="form-group admin-form-full" style="display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="form-instock" checked style="width: 20px; height: 20px; cursor: pointer;">
+            <label for="form-instock" style="margin-bottom: 0; cursor: pointer;">Product is In-Stock and Available for Order</label>
+          </div>
+          
+          <!-- Description -->
+          <div class="form-group admin-form-full">
+            <label for="form-description">Detailed Description *</label>
+            <textarea id="form-description" rows="4" required placeholder="Write product highlights, ingredients details, benefits..."></textarea>
+          </div>
+          
+          <!-- Nutrition -->
+          <div class="form-group admin-form-full">
+            <label for="form-nutrition">Nutritional Facts / Ingredients</label>
+            <textarea id="form-nutrition" rows="3" placeholder="e.g. Protein: 24g&#10;Carbs: 3g&#10;Creatine: 5g"></textarea>
+          </div>
+          
+          <!-- Usage -->
+          <div class="form-group admin-form-full">
+            <label for="form-usage">How to Use / Instructions</label>
+            <textarea id="form-usage" rows="3" placeholder="e.g. Mix 1 scoop with cold water daily before training."></textarea>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 12px; margin-top: 30px;">
+          <button type="submit" class="btn btn-primary" style="flex-grow: 1;"><i class="fa-solid fa-floppy-disk"></i> Save Product</button>
+          <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== CATEGORY FORM MODAL ==================== -->
+  <div class="admin-modal" id="category-form-modal">
+    <div class="admin-modal-content" style="max-width: 500px;">
+      <button class="detail-modal-close" onclick="closeCategoryModal()">&times;</button>
+      <h2 id="cat-modal-title" style="text-transform: uppercase; margin-bottom: 24px; border-left: 4px solid var(--primary); padding-left: 14px;">Add New Category</h2>
+      
+      <form id="category-crud-form">
+        <input type="hidden" id="edit-category-id">
+        
+        <div class="form-group">
+          <label for="form-cat-name">Category Name *</label>
+          <input type="text" id="form-cat-name" required placeholder="e.g. Mass Gainers">
+        </div>
+        
+        <div class="form-group">
+          <label for="form-cat-desc">Short Description</label>
+          <input type="text" id="form-cat-desc" placeholder="e.g. Bulk Up Fast">
+        </div>
+
+        <div class="form-group">
+          <label>Selected Icon</label>
+          <div class="selected-icon-preview" id="selected-icon-preview">
+            <i class="fa-solid fa-prescription-bottle-medical" id="icon-preview-el"></i>
+            <span id="icon-preview-name">fa-prescription-bottle-medical</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Choose Icon</label>
+          <div class="icon-picker-grid" id="icon-picker-grid">
+            <!-- Icons rendered by JS -->
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 12px; margin-top: 24px;">
+          <button type="submit" class="btn btn-primary" style="flex-grow: 1;"><i class="fa-solid fa-floppy-disk"></i> Save Category</button>
+          <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== BACKUP & JSON SYNC MODAL ==================== -->
+  <div class="admin-modal" id="backup-modal">
+    <div class="admin-modal-content" style="width: 580px;">
+      <button class="detail-modal-close" onclick="closeBackupModal()">&times;</button>
+      <h2 style="text-transform: uppercase; margin-bottom: 24px; border-left: 4px solid var(--primary); padding-left: 14px;">Backup &amp; Data Sync</h2>
+      
+      <!-- PRODUCTS Export/Import -->
+      <div style="margin-bottom: 28px;">
+        <h3 style="font-size: 15px; text-transform: uppercase; margin-bottom: 8px; color: var(--primary);">
+          <i class="fa-solid fa-boxes-stacked" style="margin-right: 6px;"></i> Products
+        </h3>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">Copy payload to overwrite your <code>products.json</code>.</p>
+        <button class="btn btn-primary" onclick="copyProductsJson()" style="width: 100%; font-size: 13px; padding: 11px; gap: 8px;">
+          <i class="fa-solid fa-copy"></i> Copy Products JSON to Clipboard
+        </button>
+        <div style="margin-top: 14px;">
+          <textarea id="import-json-area" rows="4" style="width: 100%; background-color: var(--bg-surface-elevated); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: var(--border-radius-sm); font-family: monospace; font-size: 11px;" placeholder="Paste Products JSON array here to import/overwrite..."></textarea>
+          <button class="btn btn-secondary" onclick="handleImportJson()" style="width: 100%; font-size: 13px; padding: 11px; margin-top: 8px; gap: 8px; border-color: var(--success); color: var(--success);">
+            <i class="fa-solid fa-file-import"></i> Import Products JSON
+          </button>
+        </div>
+      </div>
+
+      <hr style="border-color: var(--border-color); margin-bottom: 24px;">
+
+      <!-- CATEGORIES Export/Import -->
+      <div>
+        <h3 style="font-size: 15px; text-transform: uppercase; margin-bottom: 8px; color: var(--primary);">
+          <i class="fa-solid fa-tags" style="margin-right: 6px;"></i> Categories
+        </h3>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">Copy payload to overwrite your <code>categories.json</code>.</p>
+        <button class="btn btn-primary" onclick="copyCategoriesJson()" style="width: 100%; font-size: 13px; padding: 11px; gap: 8px;">
+          <i class="fa-solid fa-copy"></i> Copy Categories JSON to Clipboard
+        </button>
+        <div style="margin-top: 14px;">
+          <textarea id="import-categories-area" rows="4" style="width: 100%; background-color: var(--bg-surface-elevated); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: var(--border-radius-sm); font-family: monospace; font-size: 11px;" placeholder="Paste Categories JSON array here to import/overwrite..."></textarea>
+          <button class="btn btn-secondary" onclick="handleImportCategoriesJson()" style="width: 100%; font-size: 13px; padding: 11px; margin-top: 8px; gap: 8px; border-color: var(--success); color: var(--success);">
+            <i class="fa-solid fa-file-import"></i> Import Categories JSON
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Footer Root -->
+  <div id="footer-root"></div>
+
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Configurations & DB Layer -->
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Admin Panel Logic -->
+  <script>
+    let currentImageBase64 = "";
+    let selectedCategoryIcon = "fa-prescription-bottle-medical";
+    let activeTab = "products";
+
+    // ========== AVAILABLE ICONS FOR CATEGORY PICKER ==========
+    const CATEGORY_ICONS = [
+      "fa-prescription-bottle-medical",
+      "fa-prescription-bottle",
+      "fa-capsules",
+      "fa-bolt",
+      "fa-fire-flame-curved",
+      "fa-droplet-slash",
+      "fa-dumbbell",
+      "fa-heart-pulse",
+      "fa-apple-whole",
+      "fa-leaf",
+      "fa-seedling",
+      "fa-fish",
+      "fa-egg",
+      "fa-wheat-awn",
+      "fa-vial",
+      "fa-flask",
+      "fa-shield-heart",
+      "fa-star",
+      "fa-medal",
+      "fa-trophy",
+      "fa-person-running",
+      "fa-bicycle",
+      "fa-weight-scale",
+      "fa-scale-balanced",
+      "fa-plus",
+      "fa-tag",
+      "fa-tags",
+      "fa-boxes-stacked",
+      "fa-box",
+      "fa-jar",
+    ];
+
+    // ========== DOMContentLoaded ==========
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check Auth
+      if (sessionStorage.getItem("pz_admin_logged") === "true") {
+        revealDashboard();
+      } else {
+        document.getElementById("login-overlay").style.display = "flex";
+      }
+
+      // Login handler
+      document.getElementById("admin-login-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const enteredPass = document.getElementById("admin-pass-input").value;
+        const correctPass = (window.CONFIG && window.CONFIG.adminPassword) || "admin123";
+        
+        if (enteredPass === correctPass) {
+          sessionStorage.setItem("pz_admin_logged", "true");
+          revealDashboard();
+          showToast("Access Granted. Welcome back!");
+        } else {
+          showToast("Incorrect Password. Access Denied.", "error");
+        }
+      });
+
+      // Product Save Form Submit
+      document.getElementById("product-crud-form").addEventListener("submit", handleProductFormSubmit);
+      // Category Save Form Submit
+      document.getElementById("category-crud-form").addEventListener("submit", handleCategoryFormSubmit);
+
+      // Build icon picker
+      buildIconPicker();
+    });
+
+    // ========== REVEAL DASHBOARD ==========
+    function handleLogout() {
+      sessionStorage.removeItem("pz_admin_logged");
+      window.location.reload();
+    }
+
+    async function revealDashboard() {
+      document.getElementById("login-overlay").style.display = "none";
+      document.getElementById("admin-dashboard-root").style.display = "block";
+      
+      // Update DB Status Info
+      const dbStatus = document.getElementById("db-status-display");
+      const alertBox = document.getElementById("local-mode-alert");
+      if (window.DB.isSupabase()) {
+        dbStatus.className = "admin-db-status supabase";
+        dbStatus.innerHTML = `<i class="fa-solid fa-circle"></i> Supabase Cloud DB Mode (Live)`;
+        if (alertBox) alertBox.style.display = "none";
+      } else {
+        dbStatus.className = "admin-db-status local";
+        dbStatus.innerHTML = `<i class="fa-solid fa-circle"></i> Local Storage Mode (Offline)`;
+        if (alertBox) alertBox.style.display = "block";
+        // Show categories sync alert when in local mode
+        const catAlert = document.getElementById("cat-sync-alert");
+        if (catAlert) catAlert.style.display = "block";
+      }
+
+      // Set action bar for default tab (products)
+      renderActionBar("products");
+
+      // Load products & categories
+      loadInventoryTable();
+      loadCategoriesGrid();
+    }
+
+    // ========== TAB SWITCHING ==========
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll(".admin-tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".admin-tab-panel").forEach(p => p.classList.remove("active"));
+      document.getElementById("tab-btn-" + tab).classList.add("active");
+      document.getElementById("tab-panel-" + tab).classList.add("active");
+      renderActionBar(tab);
+    }
+
+    function renderActionBar(tab) {
+      const bar = document.getElementById("admin-actions-bar");
+      if (tab === "products") {
+        bar.innerHTML = `
+          <button class="btn btn-primary" onclick="openProductModal()" id="btn-add-product">
+            <i class="fa-solid fa-circle-plus"></i> Add Product
+          </button>
+          <button class="btn btn-secondary" onclick="openBackupModal()" id="btn-backup-data">
+            <i class="fa-solid fa-database"></i> Backup &amp; Sync
+          </button>
+          <button class="btn btn-secondary" onclick="handleLogout()" id="btn-logout" style="border-color: var(--error); color: var(--error);">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </button>
+        `;
+      } else if (tab === "categories") {
+        bar.innerHTML = `
+          <button class="btn btn-primary" onclick="openCategoryModal()" id="btn-add-category">
+            <i class="fa-solid fa-circle-plus"></i> Add Category
+          </button>
+          <button class="btn btn-secondary" onclick="openBackupModal()" id="btn-backup-cats">
+            <i class="fa-solid fa-database"></i> Backup &amp; Sync
+          </button>
+          <button class="btn btn-secondary" onclick="handleLogout()" style="border-color: var(--error); color: var(--error);">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </button>
+        `;
+      }
+    }
+
+    // ========== PRODUCTS TABLE ==========
+    async function loadInventoryTable() {
+      const tbody = document.getElementById("admin-products-tbody");
+      if (!tbody) return;
+      
+      try {
+        const products = await window.DB.getProducts();
+        
+        if (products.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">No supplements in database. Click "Add Product" to create one.</td></tr>`;
+          return;
+        }
+        
+        let html = "";
+        products.forEach(p => {
+          const priceStr = p.salePrice 
+            ? `<span style="color: var(--primary);">${formatPrice(p.salePrice)}</span> <span style="text-decoration: line-through; font-size: 11px; color: var(--text-muted);">${formatPrice(p.price)}</span>`
+            : `<span>${formatPrice(p.price)}</span>`;
+          
+          const stockHtml = p.inStock
+            ? `<span style="color: var(--success); font-weight:700;"><i class="fa-regular fa-circle-check"></i> Active</span>`
+            : `<span style="color: var(--error); font-weight:700;"><i class="fa-regular fa-circle-xmark"></i> Out</span>`;
+            
+          html += `
+            <tr id="admin-tr-${p.id}">
+              <td>
+                <img src="${p.image || 'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=100'}" alt="${p.name}" class="admin-table-img">
+              </td>
+              <td style="font-weight: 700;">${p.name}</td>
+              <td>${p.brand || 'Generic'}</td>
+              <td><span style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 20px; font-size:12px;">${p.category}</span></td>
+              <td class="admin-table-price">${priceStr}</td>
+              <td>-</td>
+              <td>${stockHtml}</td>
+              <td>
+                <div class="admin-table-actions">
+                  <button class="admin-icon-btn" onclick="editProduct('${p.id}')" title="Edit Product">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button class="admin-icon-btn delete" onclick="deleteProduct('${p.id}')" title="Delete Product">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+        
+        tbody.innerHTML = html;
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--error);">Error loading inventory: ${e.message}</td></tr>`;
+      }
+    }
+
+    // ========== PRODUCT MODAL ==========
+    async function openProductModal() {
+      document.getElementById("modal-title-text").textContent = "Add New Product";
+      document.getElementById("product-crud-form").reset();
+      document.getElementById("edit-product-id").value = "";
+      document.getElementById("form-image-preview").src = "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=200";
+      currentImageBase64 = "";
+      
+      // Populate category dropdown from DB
+      await populateCategoryDropdown();
+
+      document.getElementById("product-form-modal").classList.add("open");
+      document.getElementById("cart-overlay").classList.add("show");
+    }
+
+    function closeProductModal() {
+      document.getElementById("product-form-modal").classList.remove("open");
+      document.getElementById("cart-overlay").classList.remove("show");
+    }
+
+    async function populateCategoryDropdown(selectedValue) {
+      const select = document.getElementById("form-category");
+      select.innerHTML = `<option value="" disabled ${!selectedValue ? 'selected' : ''}>Select Category</option>`;
+      try {
+        const cats = await window.DB.getCategories();
+        cats.forEach(c => {
+          const opt = document.createElement("option");
+          opt.value = c.name;
+          opt.textContent = c.name;
+          if (selectedValue && c.name === selectedValue) opt.selected = true;
+          select.appendChild(opt);
+        });
+      } catch (e) {
+        console.error("Failed to load categories for dropdown:", e);
+      }
+    }
+
+    // ========== CATEGORY GRID ==========
+    async function loadCategoriesGrid() {
+      const root = document.getElementById("categories-grid-root");
+      if (!root) return;
+      
+      try {
+        const cats = await window.DB.getCategories();
+        
+        if (!cats || cats.length === 0) {
+          root.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+              <i class="fa-solid fa-tags" style="color: var(--text-muted);"></i>
+              <p>No categories yet. Click <strong>Add Category</strong> to create one.</p>
+            </div>
+          `;
+          return;
+        }
+        
+        root.innerHTML = cats.map(c => `
+          <div class="cat-card" id="cat-card-${c.id}">
+            <div class="cat-card-icon">
+              <i class="fa-solid ${c.icon || 'fa-tag'}"></i>
+            </div>
+            <p class="cat-card-name">${c.name}</p>
+            <p class="cat-card-desc">${c.desc || c.description || ''}</p>
+            <div class="cat-card-actions">
+              <button class="cat-action-btn" onclick="editCategory('${c.id}')">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
+              </button>
+              <button class="cat-action-btn delete" onclick="deleteCategory('${c.id}')">
+                <i class="fa-solid fa-trash-can"></i> Delete
+              </button>
+            </div>
+          </div>
+        `).join("");
+      } catch (e) {
+        root.innerHTML = `<div style="grid-column:1/-1; color: var(--error); padding: 40px; text-align:center;">Error loading categories: ${e.message}</div>`;
+      }
+    }
+
+    // ========== CATEGORY MODAL ==========
+    function openCategoryModal(catData) {
+      document.getElementById("cat-modal-title").textContent = catData ? "Edit Category" : "Add New Category";
+      document.getElementById("category-crud-form").reset();
+      document.getElementById("edit-category-id").value = "";
+      
+      if (catData) {
+        document.getElementById("edit-category-id").value = catData.id || "";
+        document.getElementById("form-cat-name").value = catData.name || "";
+        document.getElementById("form-cat-desc").value = catData.description || catData.desc || "";
+        setSelectedIcon(catData.icon || "fa-tag");
+      } else {
+        setSelectedIcon("fa-prescription-bottle-medical");
+      }
+
+      document.getElementById("category-form-modal").classList.add("open");
+      document.getElementById("cart-overlay").classList.add("show");
+    }
+
+    function closeCategoryModal() {
+      document.getElementById("category-form-modal").classList.remove("open");
+      document.getElementById("cart-overlay").classList.remove("show");
+    }
+
+    // ========== ICON PICKER ==========
+    function buildIconPicker() {
+      const grid = document.getElementById("icon-picker-grid");
+      if (!grid) return;
+      grid.innerHTML = CATEGORY_ICONS.map(icon => `
+        <button type="button" class="icon-option ${icon === selectedCategoryIcon ? 'selected' : ''}" 
+                data-icon="${icon}" onclick="setSelectedIcon('${icon}')" title="${icon}">
+          <i class="fa-solid ${icon}"></i>
+        </button>
+      `).join("");
+    }
+
+    function setSelectedIcon(icon) {
+      selectedCategoryIcon = icon;
+      document.getElementById("icon-preview-el").className = "fa-solid " + icon;
+      document.getElementById("icon-preview-name").textContent = icon;
+      // Update grid selection highlight
+      document.querySelectorAll(".icon-option").forEach(btn => {
+        btn.classList.toggle("selected", btn.dataset.icon === icon);
+      });
+    }
+
+    // ========== CATEGORY SAVE ==========
+    async function handleCategoryFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById("edit-category-id").value;
+      const category = {
+        id: id || null,
+        name: document.getElementById("form-cat-name").value.trim(),
+        description: document.getElementById("form-cat-desc").value.trim(),
+        icon: selectedCategoryIcon
+      };
+
+      try {
+        await window.DB.saveCategory(category);
+        showToast(id ? "Category updated!" : "New category added!");
+        closeCategoryModal();
+        loadCategoriesGrid();
+      } catch (err) {
+        showToast(`Save failed: ${err.message}`, "error");
+      }
+    }
+
+    // ========== EDIT CATEGORY ==========
+    async function editCategory(id) {
+      try {
+        const cats = await window.DB.getCategories();
+        const c = cats.find(cat => cat.id === id);
+        if (!c) return;
+        openCategoryModal(c);
+      } catch (err) {
+        showToast("Failed to load category for editing.", "error");
+      }
+    }
+
+    // ========== DELETE CATEGORY ==========
+    async function deleteCategory(id) {
+      if (!confirm("Delete this category? Products assigned to it won't be deleted, but may lose their category label.")) return;
+      try {
+        await window.DB.deleteCategory(id);
+        showToast("Category deleted.", "success");
+        loadCategoriesGrid();
+      } catch (err) {
+        showToast(`Failed to delete: ${err.message}`, "error");
+      }
+    }
+
+    // ========== BACKUP MODAL ==========
+    function openBackupModal() {
+      document.getElementById("import-json-area").value = "";
+      document.getElementById("import-categories-area").value = "";
+      document.getElementById("backup-modal").classList.add("open");
+      document.getElementById("cart-overlay").classList.add("show");
+    }
+
+    function closeBackupModal() {
+      document.getElementById("backup-modal").classList.remove("open");
+      document.getElementById("cart-overlay").classList.remove("show");
+    }
+
+    // ========== IMAGE HANDLERS ==========
+    function handleImageUrlChange(url) {
+      if (url) {
+        document.getElementById("form-image-preview").src = url;
+        currentImageBase64 = "";
+      }
+    }
+
+    function handleImageFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > 1.5 * 1024 * 1024) {
+        showToast("Warning: Large files (>1.5MB) may exceed storage limits.", "warning");
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentImageBase64 = e.target.result;
+        document.getElementById("form-image-preview").src = currentImageBase64;
+        document.getElementById("form-image-url").value = "";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ========== PRODUCT SAVE ==========
+    async function handleProductFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById("edit-product-id").value;
+      const imageUrlInput = document.getElementById("form-image-url").value;
+      const finalImage = currentImageBase64 || imageUrlInput || "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=200";
+      
+      const product = {
+        id: id || null,
+        name: document.getElementById("form-name").value,
+        brand: document.getElementById("form-brand").value,
+        category: document.getElementById("form-category").value,
+        price: parseFloat(document.getElementById("form-price").value) || 0,
+        salePrice: document.getElementById("form-sale-price").value ? parseFloat(document.getElementById("form-sale-price").value) : null,
+        image: finalImage,
+        inStock: document.getElementById("form-instock").checked,
+        description: document.getElementById("form-description").value,
+        nutrition: document.getElementById("form-nutrition").value,
+        howToUse: document.getElementById("form-usage").value
+      };
+      
+      try {
+        await window.DB.saveProduct(product);
+        showToast(id ? "Product updated successfully!" : "New product added successfully!");
+        closeProductModal();
+        loadInventoryTable();
+      } catch (err) {
+        showToast(`Save failed: ${err.message}`, "error");
+      }
+    }
+
+    // ========== EDIT PRODUCT ==========
+    async function editProduct(id) {
+      try {
+        const products = await window.DB.getProducts();
+        const p = products.find(prod => prod.id === id);
+        if (!p) return;
+        
+        document.getElementById("modal-title-text").textContent = "Edit Product Details";
+        document.getElementById("edit-product-id").value = p.id;
+        
+        document.getElementById("form-name").value = p.name;
+        document.getElementById("form-brand").value = p.brand || "";
+        document.getElementById("form-price").value = p.price;
+        document.getElementById("form-sale-price").value = p.salePrice || "";
+        
+        if (p.image && p.image.startsWith("data:image")) {
+          currentImageBase64 = p.image;
+          document.getElementById("form-image-url").value = "";
+        } else {
+          currentImageBase64 = "";
+          document.getElementById("form-image-url").value = p.image || "";
+        }
+        
+        document.getElementById("form-image-preview").src = p.image || "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=200";
+        document.getElementById("form-instock").checked = p.inStock;
+        document.getElementById("form-description").value = p.description || "";
+        document.getElementById("form-nutrition").value = p.nutrition || "";
+        document.getElementById("form-usage").value = p.howToUse || "";
+        
+        // Populate category dropdown
+        await populateCategoryDropdown(p.category);
+
+        document.getElementById("product-form-modal").classList.add("open");
+        document.getElementById("cart-overlay").classList.add("show");
+      } catch (err) {
+        showToast("Failed to fetch product details", "error");
+      }
+    }
+
+    // ========== DELETE PRODUCT ==========
+    async function deleteProduct(id) {
+      if (!confirm("Are you sure you want to delete this supplement? This cannot be undone.")) return;
+      try {
+        await window.DB.deleteProduct(id);
+        showToast("Product deleted successfully", "success");
+        loadInventoryTable();
+      } catch (err) {
+        showToast(`Failed to delete product: ${err.message}`, "error");
+      }
+    }
+
+    // ========== JSON COPY / IMPORT ==========
+    async function copyProductsJson() {
+      try {
+        const products = await window.DB.getProducts();
+        const cleanProducts = products.map(({ created_at, ...rest }) => rest);
+        const jsonStr = JSON.stringify(cleanProducts, null, 2);
+        await navigator.clipboard.writeText(jsonStr);
+        showToast("Products JSON copied! Paste into products.json.");
+      } catch (err) {
+        showToast("Failed to copy JSON. Check clipboard permissions.", "error");
+      }
+    }
+
+    async function copyCategoriesJson() {
+      try {
+        const cats = await window.DB.getCategories();
+        const cleanCats = cats.map(({ created_at, ...rest }) => rest);
+        const jsonStr = JSON.stringify(cleanCats, null, 2);
+        await navigator.clipboard.writeText(jsonStr);
+        showToast("Categories JSON copied! Paste into categories.json.");
+      } catch (err) {
+        showToast("Failed to copy JSON. Check clipboard permissions.", "error");
+      }
+    }
+
+    async function handleImportJson() {
+      const jsonStr = document.getElementById("import-json-area").value.trim();
+      if (!jsonStr) { showToast("Please paste Products JSON first!", "error"); return; }
+      if (!confirm("WARNING: Importing will overwrite your current products database. Proceed?")) return;
+      try {
+        const parsed = JSON.parse(jsonStr);
+        await window.DB.importProducts(parsed);
+        showToast("Products imported successfully!", "success");
+        closeBackupModal();
+        loadInventoryTable();
+      } catch (err) {
+        showToast("Import failed: Invalid JSON format.", "error");
+      }
+    }
+
+    async function handleImportCategoriesJson() {
+      const jsonStr = document.getElementById("import-categories-area").value.trim();
+      if (!jsonStr) { showToast("Please paste Categories JSON first!", "error"); return; }
+      if (!confirm("WARNING: Importing will overwrite your current categories. Proceed?")) return;
+      try {
+        const parsed = JSON.parse(jsonStr);
+        await window.DB.importCategories(parsed);
+        showToast("Categories imported successfully!", "success");
+        closeBackupModal();
+        loadCategoriesGrid();
+      } catch (err) {
+        showToast("Import failed: Invalid JSON format.", "error");
+      }
+    }
+  </script>
+</body>
+</html>

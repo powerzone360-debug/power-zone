@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Our Gym Supplement Store | Power Zone</title>
+  <meta name="description" content="Learn about Power Zone, Colombo's trusted fitness supplement dealer. We offer 100% authentic international brands, verified imports, and expert guidance.">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Dynamic Header Root -->
+  <div id="header-root"></div>
+
+  <!-- Page Banner -->
+  <section class="page-banner" id="about-banner">
+    <div class="container">
+      <h1>Our Story</h1>
+      <p>Dedicated to fueling your ambition, health, and fitness goals.</p>
+    </div>
+  </section>
+
+  <!-- About Content Section -->
+  <section class="section" id="about-intro">
+    <div class="container" style="max-width: 900px; text-align: center;">
+      <img src="pz.png" alt="Power Zone Gorilla" style="height: 120px; width: auto; margin-bottom: 30px; filter: drop-shadow(0 0 10px rgba(255,15,35,0.3));">
+      <h2 style="font-size: 32px; text-transform: uppercase; margin-bottom: 24px;">Who We Are</h2>
+      <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: 20px; line-height: 1.8;">
+        Founded in Colombo, Sri Lanka, <strong>Power Zone</strong> was born out of a simple need: to provide the local fitness community with reliable, 100% authentic, high-quality international supplements. We noticed the market was filled with counterfeit or low-grade replicas, and we decided to take a stand.
+      </p>
+      <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: 20px; line-height: 1.8;">
+        Today, Power Zone is one of the leading names in gym nutrition in Colombo, catering to professional bodybuilders, athletes, CrossFitters, and general gym-goers. We import directly from verified distributors in the USA, UK, and Europe, ensuring that every tub of whey protein, bag of creatine, or capsule of vitamin contains exactly what it says on the label.
+      </p>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Grid -->
+  <section class="section" id="about-features" style="background-color: #0a0a0a; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="section-header" style="justify-content: center; text-align: center; margin-bottom: 56px;">
+        <div class="section-title">
+          <h2>Why Choose Power Zone?</h2>
+          <p>We set the standard in authentic athletic nutrition.</p>
+        </div>
+      </div>
+      
+      <div class="category-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+        <div class="category-card" style="height: 240px; cursor: default;" id="about-feat-1">
+          <div class="category-icon-wrapper" style="color: var(--primary);"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3 style="margin-top: 40px; margin-bottom: 10px;">100% Authentic</h3>
+          <p style="color: var(--text-secondary); text-transform: none; font-size: 14px;">Every product features official scratch verification codes. We guarantee original imports or 100% cash back.</p>
+        </div>
+        
+        <div class="category-card" style="height: 240px; cursor: default;" id="about-feat-2">
+          <div class="category-icon-wrapper" style="color: var(--primary);"><i class="fa-solid fa-user-doctor"></i></div>
+          <h3 style="margin-top: 40px; margin-bottom: 10px;">Expert Advice</h3>
+          <p style="color: var(--text-secondary); text-transform: none; font-size: 14px;">Not sure what to buy? Our sales experts analyze your goals (fat loss, bulking, endurance) and recommend the perfect stack.</p>
+        </div>
+        
+        <div class="category-card" style="height: 240px; cursor: default;" id="about-feat-3">
+          <div class="category-icon-wrapper" style="color: var(--primary);"><i class="fa-solid fa-truck-fast"></i></div>
+          <h3 style="margin-top: 40px; margin-bottom: 10px;">Same-Day Delivery</h3>
+          <p style="color: var(--text-secondary); text-transform: none; font-size: 14px;">For orders within Colombo, we offer same-day courier dispatch. island-wide delivery takes between 2-3 business days.</p>
+        </div>
+        
+        <div class="category-card" style="height: 240px; cursor: default;" id="about-feat-4">
+          <div class="category-icon-wrapper" style="color: var(--primary);"><i class="fa-solid fa-handshake"></i></div>
+          <h3 style="margin-top: 40px; margin-bottom: 10px;">Customer First</h3>
+          <p style="color: var(--text-secondary); text-transform: none; font-size: 14px;">We are proud of our 5-star customer service. We handle order inquiries, replacements, and shipping queries in real-time on WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Footer Root -->
+  <div id="footer-root"></div>
+
+  <!-- Product Detail Modal Placeholder -->
+  <div class="detail-modal" id="product-detail-modal"></div>
+
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Configurations & DB Layer -->
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
